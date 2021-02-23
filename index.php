@@ -17,12 +17,26 @@
             
             $this->splitPGN();
             $this->buildTags();
-            $this->buildMoves();
-            $this->setResult();
             
-            $this->setTitle();
+            $this->title = $this->getTitle();
             
-            echo $this->getPlayer( 'white' );
+            if( $this->isGame() ) {
+                
+                $this->buildMoves();
+                $this->setResult();
+                
+                $this->run();
+                
+            } else {
+                
+                $this->content = '<div class="empty"><div>' .
+                    '<h1>' . $this->title . '</h1>' .
+                    '<p>Embedding chess games on your website by using the free tool from ' .
+                            '<a href="https://thekingsgame.de/embed/" target="_blank">thekingsgame.de</a></p>' .
+                    '<p>' . $this->donate() . '</p>' .
+                '</div></div>';
+                
+            }
             
         }
         
@@ -177,14 +191,18 @@
             
         }
         
-        private function setTitle() {
+        private function getTitle(
+            bool $link = false
+        ) {
             
-            $this->title = $this->isGame()
+            return $this->isGame()
                 ? implode( ' • ', array_filter( [
                       $this->getTag( 'white', 'unknown' ) . ' vs. ' . $this->getTag( 'black', 'unknown' ),
                       $this->getTag( 'timecontrol' ),
                       ucfirst( $this->getTag( 'variant', 'standard' ) ),
-                      $this->getEvent()
+                      $link && strlen( $this->getLink() ) > 0
+                          ? '<a href="' . $this->getLink() . '" target="_blank">' . $this->getEvent() . '</a>'
+                          : $this->getEvent()
                   ] ) )
                 : 'Chess game embedder';
             
@@ -246,9 +264,63 @@
             
         }
         
+        private function getHistory() {
+            
+            return '<history><moves>' . implode( '', $this->history ) . '</moves></history>';
+            
+        }
+        
+        private function donate() {
+            
+            return '<a href="https://paypal.me/komed3" class="donate" target="_blank" title="Donate and help"><i data-icon=""></i></a>';
+            
+        }
+        
+        private function run() {
+            
+            $this->content = '<div class="container">' .
+                $this->getPlayer( 'white' ) .
+                $this->getPlayer( 'black' ) .
+                '<div class="board"><div id="board"></div></div>' .
+                '<div class="aside">' .
+                    $this->getHistory() .
+                    '<div class="controls">' .
+                        '<button data-action="first" title="First"><i data-icon="W"></i></button>' .
+                        '<button data-action="prev" title="Prev"><i data-icon="Y"></i></button>' .
+                        '<button data-action="flip" title="Flip board"><i data-icon="B"></i></button>' .
+                        '<button data-action="next" title="Next"><i data-icon="X"></i></button>' .
+                        '<button data-action="last" title="Last"><i data-icon="V"></i></button>' .
+                    '</div>' .
+                '</div>' .
+            '</div>' .
+            '<footer>' .
+                '<div class="credits">' .
+                    implode( ' • ', [
+                        $this->getTitle( true ),
+                        '&copy; ' . date( 'Y' ) . ' <a href="https://thekingsgame.de" target="_blank">thekingsgame.de</a>',
+                        '<a href="https://github.com/jhlywa/chess.js" target="_blank">chess.js</a>',
+                        '<a href="https://chessboardjs.com/" target="_blank">chessboard.js</a>'
+                    ] ) .
+                '</div>' .
+                '<div class="donate">' . $this->donate() . '</div>' .
+            '</footer>';
+            
+        }
+        
         public function output() {
             
-            print $this->content;
+            print '<!DOCTYPE html>' .
+            '<html lang="en">' .
+                '<head>' .
+                    '<meta charset="utf-8" />' .
+                    '<meta name="viewport" content="width=device-width, user-scalable=no" />' .
+                    '<meta name="author" content="thekingsgame.de" />' .
+                    '<title>' . $this->title . '</title>' .
+                '</head>' .
+                '<body>' .
+                    $this->content .
+                '</body>' .
+            '</html>';
             
         }
         
