@@ -371,6 +371,7 @@
                     '<meta name="viewport" content="width=device-width, user-scalable=no" />' .
                     '<meta name="author" content="thekingsgame.de" />' .
                     '<title>' . $this->title . '</title>' .
+                    '<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">' .
                     '<link rel="stylesheet" href="./resources/css/style.css" />' .
                     '<link rel="stylesheet" href="./resources/css/board.css" />' .
                     '<link rel="stylesheet" href="./resources/css/' . $this->theme['style'] . '.css" />' .
