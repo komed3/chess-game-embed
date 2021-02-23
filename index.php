@@ -236,11 +236,24 @@
             
         }
         
+        private function getTermination() {
+            
+            return [
+               -1 => 'ongoing game or unknown termination',
+                0 => 'Black wins',
+                1 => 'White wins',
+                2 => 'draw'
+            ][ $this->result[0] ];
+            
+        }
+        
         private function getPlayerTitle(
             string $color = 'white'
         ) {
             
-            return $this->isTag( $color . 'title' ) ? '<span class="title">' . $this->getTag( $color . 'title' ) . '</span>' : '';
+            return $this->isTag( $color . 'title' ) && $this->getTag( $color . 'title' ) != '-'
+                ? '<span class="title">' . $this->getTag( $color . 'title' ) . '</span>'
+                : '';
             
         }
         
@@ -266,7 +279,16 @@
         
         private function getHistory() {
             
-            return '<history><moves>' . implode( '', $this->history ) . '</moves></history>';
+            return '<history><moves>' . implode( '', $this->history ) . '</moves>' . $this->getResult() . '</history>';
+            
+        }
+        
+        private function getResult() {
+            
+            return '<div class="result">' .
+                '<div class="score">' . $this->getScore( 'white' ) . ':' . $this->getScore( 'black' ) . '</div>' .
+                '<div class="termination">' . $this->getTermination() . '</div>' .
+            '</div>';
             
         }
         
@@ -316,6 +338,10 @@
                     '<meta name="viewport" content="width=device-width, user-scalable=no" />' .
                     '<meta name="author" content="thekingsgame.de" />' .
                     '<title>' . $this->title . '</title>' .
+                    '<script src="./resources/js/jquery.min.js"></script>' .
+                    '<script src="./resources/js/chess.min.js"></script>' .
+                    '<script src="./resources/js/chessboard.min.js"></script>' .
+                    '<script src="./resources/js/embed.js"></script>' .
                 '</head>' .
                 '<body>' .
                     $this->content .
