@@ -229,7 +229,7 @@
             string $color = 'white'
         ) {
             
-            return '<div class="player ' . $color . '">' .
+            return '<div class="player ' . $color . ' ' . ( [ 'white' => 'bottom', 'black' => 'top' ][ $color ] ) . '">' .
                 '<div class="score">' .
                     $this->getScore( $color ) .
                 '</div>' .
@@ -378,7 +378,7 @@
                     '<script src="./resources/js/jquery.min.js"></script>' .
                     '<script src="./resources/js/chess.min.js"></script>' .
                     '<script src="./resources/js/chessboard.min.js"></script>' .
-                    '<script src="./resources/js/embed.js"></script>' .
+                    ( $this->isGame() ? '<script src="./resources/js/embed.js"></script>' : '' ) .
                 '</head>' .
                 '<body>' .
                     $this->content .

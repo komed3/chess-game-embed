@@ -245,6 +245,10 @@ i {
     transition: color 250ms, background 250ms;
 }
 
+.aside .controls button:disabled {
+    opacity: 0.4;
+}
+
 .aside .controls button:not(:disabled):hover {
     background: var( --border-color );
     cursor: pointer;
@@ -274,5 +278,31 @@ footer .credits {
 
 footer .donate a {
     font-size: 1.3em;
+    color: var( --bad-color );
+}
+
+/* empty */
+
+.empty {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate( -50%, -50% );
+    max-width: 65vw;
+    text-align: center;
+}
+
+.empty h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.empty p {
+    margin: 1.6em 0;
+    font-size: 1.2em;
+}
+
+.empty a.donate {
+    font-size: 1.6em;
     color: var( --bad-color );
 }
