@@ -2,9 +2,13 @@
     
     class Embed {
         
-        private $pgn;
+        private $pgn = [];
+        private $tags = [];
         
-        private $tags;
+        private $history = [];
+        private $moves = [];
+        
+        private $result = [];
         
         private $title;
         private $content;
@@ -13,8 +17,12 @@
             
             $this->splitPGN();
             $this->buildTags();
+            $this->buildMoves();
+            $this->setResult();
             
             $this->setTitle();
+            
+            echo $this->getPlayer( 'white' );
             
         }
         
@@ -46,6 +54,63 @@
                 }
                 
             }
+            
+        }
+        
+        private function buildMoves() {
+            
+            $notation = str_replace(
+                [ '.', '  ' ],
+                [ '. ', ' ' ],
+                preg_replace(
+                    '/\{(.+)\}/U', '',
+                    str_replace(
+                        [ '–', '0-0-0', '0-0' ],
+                        [ '-', 'O-O-O', 'O-O' ],
+                        end( $this->pgn )
+                    )
+                )
+            );
+            
+            $i = 0;
+            $co = 'w';
+            
+            foreach( array_filter( explode( ' ', $notation ) ) as $move ) {
+                
+                if( preg_match( '/(.+)[:|-](.+)/', $move ) && strpos( $move, 'O' ) === false ) {
+                    
+                    continue;
+                    
+                } else if( preg_match( '/^([0-9]{1,})\./', $move, $idx ) ) {
+                    
+                    $this->history[] = '<idx>' . $idx[1] . '</idx>';
+                    
+                    $no = $idx[1];
+                    $co = 'w';
+                    
+                } else {
+                    
+                    $this->history[] = '<move data-id="' . $i . '" data-no="' . $no . '" data-co="' . $co . '">' . $move . '</move>';
+                    
+                    $this->moves[ $i ] = ( $co == 'w' ? $no . '. ' : '' ) . $move;
+                    
+                    $co = 'b';
+                    $i++;
+                    
+                }
+                
+            }
+            
+        }
+        
+        private function setResult() {
+            
+            $this->result = [
+                '*' => [ -1, -1 ],
+                '0-1' => [ 0, 1 ],
+                '1-0' => [ 1, 0 ],
+                '1/2-1/2' => [ 2, 2 ]
+            ][ $this->getTag( 'result', '*' ) ];
             
         }
         
@@ -122,6 +187,62 @@
                       $this->getEvent()
                   ] ) )
                 : 'Chess game embedder';
+            
+        }
+        
+        private function getPlayer(
+            string $color = 'white'
+        ) {
+            
+            return '<div class="player ' . $color . '">' .
+                '<div class="score">' .
+                    $this->getScore( $color ) .
+                '</div>' .
+                '<div class="name">' .
+                    $this->getPlayerTitle( $color ) .
+                    $this->getTag( $color ) .
+                '</div>' .
+                '<div class="rating">' .
+                    $this->getRating( $color ) .
+                    $this->getRatingDiff( $color ) .
+                '</div>' .
+            '</div>';
+            
+        }
+        
+        private function getScore(
+            string $color = 'white'
+        ) {
+            
+            return [ -1 => '–', 0 => '0', 1 => '1', 2 => '½' ][ $this->result[ [ 'white' => 0, 'black' => 1 ][ $color ] ] ];
+            
+        }
+        
+        private function getPlayerTitle(
+            string $color = 'white'
+        ) {
+            
+            return $this->isTag( $color . 'title' ) ? '<span class="title">' . $this->getTag( $color . 'title' ) . '</span>' : '';
+            
+        }
+        
+        private function getRating(
+            string $color = 'white'
+        ) {
+            
+            $rating = $this->getTag( $color . 'elo', 0 );
+            
+            return $rating > 0 ? round( $rating ) : '';
+            
+        }
+        
+        private function getRatingDiff(
+            string $color = 'white'
+        ) {
+            
+            $diff = $this->getTag( $color . 'ratingdiff', 0 );
+            
+            return $diff != 0 ? '<span class="diff ' . ( $diff < 0 ? 'bad' : 'good' ) . '">' . abs( round( $diff ) ) . '</span>' : '';
             
         }
         
