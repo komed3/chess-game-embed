@@ -13,12 +13,17 @@
         private $title;
         private $content;
         
-        private $theme = 'light';
+        private $theme = [
+            'style' => 'light',
+            'pieceset' => 'cburnett'
+        ];
         
         function __construct() {
             
             $this->splitPGN();
             $this->buildTags();
+            
+            $this->loadTheme();
             
             $this->title = $this->getTitle();
             
@@ -70,6 +75,16 @@
                 }
                 
             }
+            
+        }
+        
+        private function loadTheme() {
+            
+            $style = strtolower( $this->getParam( 'theme', 'light' ) );
+            $pieceset = strtolower( $this->getParam( 'pieceset', 'cburnett' ) );
+            
+            $this->theme['style'] = is_file( __DIR__ . '/resources/css/' . $style . '.css' ) ? $style : 'light';
+            $this->theme['pieceset'] = is_dir( __DIR__ . '/resources/pieces/' . $pieceset ) ? $pieceset : 'cburnett';
             
         }
         
@@ -300,12 +315,28 @@
             
         }
         
+        private function getOptions() {
+            
+            return json_encode( [
+                'position' => $this->getTag( 'fen', 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' ),
+                'start' => $this->getParam( 'start', -1 ),
+                'notation' => !!$this->getParam( 'notation', 1 ),
+                'inline' => !!$this->getParam( 'inline', 0 ),
+                'orientation' => $this->getParam( 'orientation', 'white' ),
+                'piecetheme' => $this->theme['pieceset'],
+                'moves' => $this->moves
+            ], JSON_NUMERIC_CHECK );
+            
+        }
+        
         private function run() {
             
             $this->content = '<div class="container">' .
-                $this->getPlayer( 'white' ) .
-                $this->getPlayer( 'black' ) .
-                '<div class="board"><div id="board"></div></div>' .
+                '<div class="main">' .
+                    $this->getPlayer( 'white' ) .
+                    $this->getPlayer( 'black' ) .
+                    '<div class="board"><div id="board"></div></div>' .
+                '</div>' .
                 '<div class="aside">' .
                     $this->getHistory() .
                     '<div class="controls">' .
@@ -342,7 +373,8 @@
                     '<title>' . $this->title . '</title>' .
                     '<link rel="stylesheet" href="./resources/css/style.css" />' .
                     '<link rel="stylesheet" href="./resources/css/board.css" />' .
-                    '<link rel="stylesheet" href="./resources/css/' . $this->theme . '.css" />' .
+                    '<link rel="stylesheet" href="./resources/css/' . $this->theme['style'] . '.css" />' .
+                    '<script>var options = ' . $this->getOptions() . ';</script>' .
                     '<script src="./resources/js/jquery.min.js"></script>' .
                     '<script src="./resources/js/chess.min.js"></script>' .
                     '<script src="./resources/js/chessboard.min.js"></script>' .

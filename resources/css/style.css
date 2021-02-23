@@ -18,9 +18,261 @@ body {
     margin: 0;
     height: 100%;
     font-family: 'Noto Sans', sans-serif;
-    font-size: 16px;
+    font-size: 1em;
     color: var( --text-color );
     background: var( --site-bg );
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+
+a {
+    text-decoration: none;
+    color: var( --hl-color );
+}
+
+i {
+    font-style: normal;
+}
+
+[data-icon]::before {
+    content: attr( data-icon );
+    font-family: 'Lichess';
+}
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc( 100vh - 2.6rem );
+    padding: 0 10px;
+    display: grid;
+    grid-template-columns: calc( 100vh - 6.6rem ) auto;
+    grid-template-rows: auto;
+    grid-template-areas: 'main aside';
+    column-gap: 10px;
+}
+
+.main {
+    grid-area: main;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.main .board {
+    flex: 0 0 auto;
+    order: 2;
+    width: calc( 100vh - 6.6rem );
+    pointer-events: none;
+}
+
+.main .player {
+    flex: 0 0 2rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.main .player.top {
+    order: 1;
+}
+
+.main .player.bottom {
+    order: 3;
+}
+
+.main .player .score {
+    width: 1.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px var( --bg-color );
+}
+
+.main .player .name .title {
+    padding-right: 0.2em;
+    font-weight: bold;
+    opacity: 0.6;
+}
+
+.main .player .rating {
+    padding-left: 1em;
+}
+
+.main .player .rating .diff {
+    padding-left: 0.4em;
+    font-size: 0.9em;
+}
+
+.main .player .rating .diff::before {
+    padding-right: 0.1em;
+    font-family: 'Lichess';
+    font-size: 0.8em;
+}
+
+.main .player .rating .diff.good::before {
+    content: 'N';
+    color: var( --good-color );
+}
+
+.main .player .rating .diff.bad::before {
+    content: 'M';
+    color: var( --bad-color );
+}
+
+.aside {
+    grid-area: aside;
+    padding: 2rem 0;
+    display: flex;
+    flex-flow: column nowrap;
+    overflow: hidden;
+}
+
+.aside history {
+    position: relative;
+    background: var( --light-gray );
+    box-shadow: var( --box-shadow );
+    border-radius: 3px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 10;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.aside history::-webkit-scrollbar {
+    display: none;
+}
+
+.aside history moves {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.aside history.inline moves {
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+.aside history:not(.inline) moves * {
+    line-height: 1.8rem;
+    font-size: 15px;
+}
+
+.aside history.inline moves * {
+    margin: 0 1px 1px 0;
+    padding: 2px 5px;
+    border-radius: 2px;
+}
+
+.aside history:not(.inline) moves idx {
+    flex: 0 0 14%;
+    text-align: center;
+    background: var( --midd-gray );
+    border-right: 1px solid var( --border-color );
+}
+
+.aside history.inline moves idx {
+    display: none;
+}
+
+.aside history moves move {
+    font-family: 'Lichess Chess', 'Noto Sans', sans-serif;
+    background: transparent;
+    cursor: pointer;
+    transition: color 250ms, background 250ms;
+}
+
+.aside history moves move.active {
+    color: var( --light-gray );
+    background: var( --dark-gray );
+}
+
+.aside history moves move:not(.active):hover {
+    background: var( --midd-gray );
+}
+
+.aside history:not(.inline) moves move {
+    flex: 0 0 43%;
+    padding: 0 0.4em;
+}
+
+.aside history.inline moves move {
+    font-weight: bold;
+}
+
+.aside history.inline moves move[data-co="w"]::before {
+    content: attr( data-no ) '.';
+    margin-right: 0.4em;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.aside history .result {
+    display: block;
+    border-top: 1px solid var( --border-color );
+    padding: 14px 0;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.aside history .result .score {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.aside .controls {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.aside .controls button {
+    flex: 1;
+    padding: 0.6em 0 0.4em 0;
+    font-size: 1em;
+    color: var( --text-color );
+    background: transparent;
+    border: 0;
+    outline: 0 none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    transition: color 250ms, background 250ms;
+}
+
+.aside .controls button:not(:disabled):hover {
+    background: var( --border-color );
+    cursor: pointer;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2.6rem;
+    padding: 0 10px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var( --light-gray );
+    border-top: 1px solid var( --border-color );
+}
+
+footer .credits {
+    white-space: nowrap;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+footer .donate a {
+    font-size: 1.3em;
+    color: var( --bad-color );
 }
