@@ -13,6 +13,8 @@
         private $title;
         private $content;
         
+        private $theme = 'light';
+        
         function __construct() {
             
             $this->splitPGN();
@@ -338,6 +340,9 @@
                     '<meta name="viewport" content="width=device-width, user-scalable=no" />' .
                     '<meta name="author" content="thekingsgame.de" />' .
                     '<title>' . $this->title . '</title>' .
+                    '<link rel="stylesheet" href="./resources/css/style.css" />' .
+                    '<link rel="stylesheet" href="./resources/css/board.css" />' .
+                    '<link rel="stylesheet" href="./resources/css/' . $this->theme . '.css" />' .
                     '<script src="./resources/js/jquery.min.js"></script>' .
                     '<script src="./resources/js/chess.min.js"></script>' .
                     '<script src="./resources/js/chessboard.min.js"></script>' .
