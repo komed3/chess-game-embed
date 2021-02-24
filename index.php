@@ -194,6 +194,16 @@
             
         }
         
+        private function getTimeControl() {
+            
+            return preg_replace_callback( '/^([0-9]{1,})\+([0-9]{1,})$/', function( $matches ) {
+                
+                return round( $matches[1] / 60 ) . '+' . $matches[2];
+                
+            }, $this->getTag( 'timecontrol' ) );
+            
+        }
+        
         private function getLink() {
             
             $link = preg_grep( '/^http.*/', $this->tags );
@@ -215,7 +225,7 @@
             return $this->isGame()
                 ? implode( ' • ', array_filter( [
                       $this->getTag( 'white', 'unknown' ) . ' vs. ' . $this->getTag( 'black', 'unknown' ),
-                      $this->getTag( 'timecontrol' ),
+                      $this->getTimeControl(),
                       ucfirst( $this->getTag( 'variant', 'standard' ) ),
                       $link && strlen( $this->getLink() ) > 0
                           ? '<a href="' . $this->getLink() . '" target="_blank">' . $this->getEvent() . '</a>'
