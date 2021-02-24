@@ -1,8 +1,6 @@
 RewriteEngine On
 
 RewriteRule ^\.htaccess$ - [F]
-RewriteRule ^\LICENSE$ - [F]
-RewriteRule ^\README.md$ - [F]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
