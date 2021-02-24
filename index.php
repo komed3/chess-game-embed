@@ -83,7 +83,7 @@
             $style = strtolower( $this->getParam( 'theme', 'light' ) );
             $pieceset = strtolower( $this->getParam( 'pieceset', 'cburnett' ) );
             
-            $this->theme['style'] = is_file( __DIR__ . '/resources/css/' . $style . '.css' ) ? $style : 'light';
+            $this->theme['style'] = is_file( __DIR__ . '/resources/css/themes/' . $style . '.css' ) ? $style : 'light';
             $this->theme['pieceset'] = is_dir( __DIR__ . '/resources/pieces/' . $pieceset ) ? $pieceset : 'cburnett';
             
         }
@@ -384,7 +384,7 @@
                     '<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">' .
                     '<link rel="stylesheet" href="./resources/css/style.css" />' .
                     '<link rel="stylesheet" href="./resources/css/board.css" />' .
-                    '<link rel="stylesheet" href="./resources/css/' . $this->theme['style'] . '.css" />' .
+                    '<link rel="stylesheet" href="./resources/css/themes/' . $this->theme['style'] . '.css" />' .
                     '<script>var options = ' . $this->getOptions() . ';</script>' .
                     '<script src="./resources/js/jquery.min.js"></script>' .
                     '<script src="./resources/js/chess.min.js"></script>' .
