@@ -263,17 +263,6 @@
             
         }
         
-        private function getTermination() {
-            
-            return [
-               -1 => 'ongoing game or unknown termination',
-                0 => 'Black wins',
-                1 => 'White wins',
-                2 => 'draw'
-            ][ $this->result[0] ];
-            
-        }
-        
         private function getPlayerTitle(
             string $color = 'white'
         ) {
@@ -314,7 +303,7 @@
             
             return '<div class="result">' .
                 '<div class="score">' . $this->getScore( 'white' ) . ':' . $this->getScore( 'black' ) . '</div>' .
-                '<div class="termination">' . $this->getTermination() . '</div>' .
+                '<div class="termination">loading &hellip;</div>' .
             '</div>';
             
         }
@@ -334,7 +323,8 @@
                 'inline' => !!$this->getParam( 'inline', 0 ),
                 'orientation' => $this->getParam( 'orientation', 'white' ),
                 'piecetheme' => $this->theme['pieceset'],
-                'moves' => $this->moves
+                'moves' => $this->moves,
+                'result' => $this->result
             ], JSON_NUMERIC_CHECK );
             
         }

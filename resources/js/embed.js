@@ -10,6 +10,32 @@ jQuery( document ).ready( function( $ ) {
         
     };
     
+    function getTermination() {
+        
+        var termination = '',
+            tgame = new Chess();
+        
+        tgame.load_pgn( options.moves.join( ' ' ) );
+        
+        var winner = [ 'Black wins', 'White wins', 'draw' ][ options.result[0] ];
+        
+        if( options.result[0] == -1 )
+            termination = tgame.game_over() ? 'unknown termination' : 'ongoing game';
+        
+        else if( !tgame.game_over() )
+            termination = { w: 'White', b: 'Black' }[ tgame.turn() ] + ' resign, ' + winner;
+        
+        else
+            termination = tgame.in_checkmate() ? 'mate, ' + winner :
+                tgame.in_stalemate() ? 'stalemate' :
+                    tgame.in_threefold_repetition() ? 'threefold repetition' :
+                        tgame.insufficient_material() ? 'insufficient material' :
+                            tgame.in_draw() ? 'draw' : 'unknown termination';
+        
+        $( 'history .termination' ).text( termination );
+        
+    }
+    
     function flipBoard() {
         
         $( '.player' ).toggleClass( 'top' ).toggleClass( 'bottom' );
@@ -145,6 +171,8 @@ jQuery( document ).ready( function( $ ) {
         flipBoard();
     
     setTimeout( function() {
+        
+        getTermination();
         
         board.resize();
         loadMove( options.start, false, true );
