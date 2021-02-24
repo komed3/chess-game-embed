@@ -18,7 +18,7 @@ body {
     margin: 0;
     height: 100%;
     font-family: 'Noto Sans', sans-serif;
-    font-size: 1em;
+    font-size: 16px;
     color: var( --text-color );
     background: var( --site-bg );
     background-repeat: no-repeat;
@@ -44,13 +44,13 @@ i {
     top: 0;
     left: 0;
     width: 100%;
-    height: calc( 100vh - 2.6rem );
+    height: calc( 100vh - 30px );
     padding: 0 10px;
     display: grid;
-    grid-template-columns: calc( 100vh - 6.6rem ) auto;
+    grid-template-columns: calc( 100vh - 80px ) auto;
     grid-template-rows: auto;
     grid-template-areas: 'main aside';
-    column-gap: 10px;
+    column-gap: 8px;
 }
 
 .main {
@@ -64,18 +64,18 @@ i {
 .main .board {
     flex: 0 0 auto;
     order: 2;
-    width: calc( 100vh - 6.6rem );
+    width: calc( 100vh - 80px );
     pointer-events: none;
 }
 
 .main .player {
-    flex: 0 0 2rem;
+    flex: 0 0 25px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
     align-items: center;
     white-space: nowrap;
-    font-size: 0.9rem;
+    font-size: 13px;
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -89,30 +89,30 @@ i {
 }
 
 .main .player .score {
-    width: 1.2rem;
+    width: 20px;
     font-weight: bold;
     text-shadow: 1px 1px 1px var( --bg-color );
 }
 
 .main .player .name .title {
-    padding-right: 0.2em;
+    padding-right: 4px;
     font-weight: bold;
     opacity: 0.6;
 }
 
 .main .player .rating {
-    padding-left: 1em;
+    padding-left: 10px;
 }
 
 .main .player .rating .diff {
-    padding-left: 0.4em;
-    font-size: 0.9em;
+    padding-left: 4px;
+    font-size: 11px;
 }
 
 .main .player .rating .diff::before {
-    padding-right: 0.1em;
+    padding-right: 1px;
     font-family: 'Lichess';
-    font-size: 0.8em;
+    font-size: 9px;
 }
 
 .main .player .rating .diff.good::before {
@@ -127,7 +127,7 @@ i {
 
 .aside {
     grid-area: aside;
-    padding: 2rem 0;
+    padding: 25px 0;
     display: flex;
     flex-flow: column nowrap;
     overflow: hidden;
@@ -156,7 +156,7 @@ i {
 
 .aside history.inline moves {
     padding: 10px;
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .aside history:not(.inline) moves * {
@@ -199,7 +199,7 @@ i {
 
 .aside history:not(.inline) moves move {
     flex: 0 0 43%;
-    padding: 0 0.4em;
+    padding: 0 6px;
 }
 
 .aside history.inline moves move {
@@ -208,7 +208,7 @@ i {
 
 .aside history.inline moves move[data-co="w"]::before {
     content: attr( data-no ) '.';
-    margin-right: 0.4em;
+    margin-right: 6px;
     font-size: 14px;
     font-weight: normal;
 }
@@ -218,12 +218,12 @@ i {
     border-top: 1px solid var( --border-color );
     padding: 14px 0;
     text-align: center;
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .aside history .result .score {
     display: block;
-    font-size: 1.2em;
+    font-size: 16px;
     font-weight: bold;
 }
 
@@ -234,8 +234,8 @@ i {
 
 .aside .controls button {
     flex: 1;
-    padding: 0.6em 0 0.4em 0;
-    font-size: 1em;
+    padding: 8px 0 4px 0;
+    font-size: 16px;
     color: var( --text-color );
     background: transparent;
     border: 0;
@@ -259,7 +259,7 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 2.6rem;
+    height: 30px;
     padding: 0 10px;
     display: flex;
     flex-flow: row nowrap;
@@ -271,13 +271,13 @@ footer {
 
 footer .credits {
     white-space: nowrap;
-    font-size: 0.8rem;
+    font-size: 12px;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 
 footer .donate a {
-    font-size: 1.3em;
+    font-size: 18px;
     color: var( --bad-color );
 }
 
@@ -288,21 +288,20 @@ footer .donate a {
     top: 50%;
     left: 50%;
     transform: translate( -50%, -50% );
-    max-width: 65vw;
+    max-width: 75vw;
     text-align: center;
 }
 
 .empty h1 {
     margin: 0;
-    font-size: 1.8em;
+    font-size: 26px;
 }
 
 .empty p {
-    margin: 1.6em 0;
-    font-size: 1.2em;
+    margin: 18px 0;
 }
 
 .empty a.donate {
-    font-size: 1.6em;
+    font-size: 26px;
     color: var( --bad-color );
 }
