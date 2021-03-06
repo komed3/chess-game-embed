@@ -36,10 +36,20 @@
                 
             } else {
                 
+                if( isset( $_POST['pgn'] ) ) {
+                    
+                    header( 'LOCATION: ?pgn=' . base64_encode( trim( $_POST['pgn'] ) ) );
+                    
+                }
+                
                 $this->content = '<div class="empty"><div>' .
                     '<h1>' . $this->title . '</h1>' .
                     '<p>Embedding chess games on your website by using the free tool from ' .
-                            '<a href="https://thekingsgame.de/embed/" target="_blank">thekingsgame.de</a></p>' .
+                            '<a href="https://thekingsgame.de/" target="_blank">thekingsgame.de</a></p>' .
+                    '<form action="" method="post" autocomplete="off">' .
+                        '<textarea name="pgn" placeholder="Copy your PGN here ..." required></textarea>' .
+                        '<button type="submit">Create game</button>' .
+                    '</form>' .
                     '<p>' . $this->donate() . '</p>' .
                 '</div></div>';
                 
